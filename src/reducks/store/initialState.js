@@ -3,8 +3,8 @@ const initialState = {
 
     },
     users: {
-        icon: "",
         isSignedId: false,
+        role: "",
         uid: "",
         username: ""
     }
