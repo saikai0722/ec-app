@@ -4,6 +4,7 @@ export const signInAction = (useState) => {
         type: "SIGN_IN",
         payload: {
             isSignedId: true,
+            role: useState.role,
             uid: useState.uid,
             username: useState.username
         }
