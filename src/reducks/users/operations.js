@@ -2,6 +2,31 @@ import {signInAction} from './actions';
 import { push } from 'connected-react-router';
 import {auth, db, FirebaseTimestamp} from '../../firebase/index';
 
+export const listenAuthState = () => {
+    return async (dispatch) => {
+        return auth.onAuthStateChanged(user => {
+            if (user) {
+                const uid = user.uid
+
+                    db.collection('users').doc(uid).get()
+                        .then(snapshot => {
+                            const data = snapshot.data()
+
+                            dispatch(signInAction({
+                                isSignedIn: true,
+                                role: data.role,
+                                uid: uid,
+                                username: data.username
+                            }))
+                            
+                        })
+            } else {
+                dispatch(push('/signin'))
+            }
+        })
+    }
+}
+
 export const signIn = (email, password) => {
     return async (dispatch) => {
         //Validation
@@ -22,7 +47,7 @@ export const signIn = (email, password) => {
                             const data = snapshot.data()
 
                             dispatch(signInAction({
-                                isSignIn: true,
+                                isSignedIn: true,
                                 role: data.role,
                                 uid: uid,
                                 username: data.username
@@ -79,3 +104,9 @@ export const signUp = (username, email, password, confirmPassword) => {
     }
 
 }
+
+//Firebase Authのメソッド
+//createUserWithEmailAndPassword()
+//signInWithEmailAndPassword()
+// onAuthStateChanged()　認証状態を監視して変化があったら戻り値を返す
+// sendPasswordResetEmail() PWリセットメールを送る
