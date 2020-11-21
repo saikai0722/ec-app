@@ -3,7 +3,7 @@ export const signInAction = (useState) => {
     return {
         type: "SIGN_IN",
         payload: {
-            isSignedId: true,
+            isSignedIn: true,
             role: useState.role,
             uid: useState.uid,
             username: useState.username
@@ -17,6 +17,7 @@ export const signOutAction = () => {
         type: "SIGN_OUT",
         payload: {
             isSignedId: false,
+            role: "",
             uid: "",
             username: ""
         }
