@@ -6,6 +6,8 @@ import {ConnectedRouter} from 'connected-react-router';
 import * as History from 'history';
 //import * as serviceWorker from './serviceWorker';
 import App from './App';
+import './assets/reset.css'
+import './assets/style.css'
 import reportWebVitals from './reportWebVitals';
 
 const history = History.createBrowserHistory();
