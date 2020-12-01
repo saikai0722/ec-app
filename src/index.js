@@ -8,7 +8,9 @@ import * as History from 'history';
 import App from './App';
 import './assets/reset.css'
 import './assets/style.css'
+import {theme} from './assets/theme'
 import reportWebVitals from './reportWebVitals';
+import {MuiThemeProvider} from '@material-ui/core/styles';
 
 const history = History.createBrowserHistory();
 export const store = createStore(history);
@@ -16,7 +18,9 @@ export const store = createStore(history);
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
