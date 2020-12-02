@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme)=>({
     price: {
         color: theme.palette.secondary.main,
         fontSize: 16
+    },
+    iconButtons: {
+        margin: '0 0 0 auto'
     }
 }));
 
@@ -77,7 +80,7 @@ const ProductCard = (props) => {
                         ¥{price}
                     </Typography>
                 </div>
-                <IconButton onClick={handleClick}>
+                <IconButton onClick={handleClick} className={classes.iconButtons}>
                     <MOreVertIcon />
                 </IconButton>
                 <Menu
