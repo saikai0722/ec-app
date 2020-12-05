@@ -93,7 +93,7 @@ export const orderProduct = (productsInCart, amount) => {
                     created_at: timestamp,
                     id: orderRef.id,
                     products: products,
-                    sipping_date: shippingDate,
+                    shipping_date: shippingDate,
                     updated_at: timestamp
                 }
 
