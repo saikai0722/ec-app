@@ -1,4 +1,6 @@
+export {default as CartList} from './CartList';
 export {default as Home} from './Home';
+export {default as OrderComfirm} from './OrderComfirm';
 export {default as ProductDetale} from './ProductDetale';
 export {default as ProductEdit} from './ProductEdit';
 export {default as ProductList} from './ProductList';

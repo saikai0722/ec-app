@@ -4,7 +4,7 @@ export const fetchProductsInCartAction = (products) => {
         type: "FETCH_PRODUCTS_IN_CART",
         payload: products
     }
-};
+}
 
 export const SIGN_IN = "SIGN_IN";
 export const signInAction = (useState) => {
