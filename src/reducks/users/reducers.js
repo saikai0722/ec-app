@@ -7,7 +7,7 @@ export const UsersReducer = (state = initialState.users, action) => { //第一�
             return {
                 ...state,
                 cart: [...action.payload]
-            }
+            };
         case Actions.SIGN_IN:
             return {
                 ...state,

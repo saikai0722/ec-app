@@ -6,36 +6,36 @@ import HTMLReactParser from 'html-react-parser';
 import {ImageSwiper, SizeTable} from '../components/Products';
 import {addProductToCart} from '../reducks/users/operations';
 
-const useStyles = makeStyles((theme)=>({
-    sliderBox:{
+const useStyles = makeStyles((theme) => ({
+    sliderBox: {
         [theme.breakpoints.down('sm')]: {
             margin: '0 auto 24px auto',
             height: 320,
             width: 320
         },
         [theme.breakpoints.up('sm')]: {
-            margin: '0 auto',
+            margin: '0 auto 0 0',
             height: 400,
             width: 400
-        }
+        },
     },
-    detale: {
+    detail: {
         textAlign: 'left',
         [theme.breakpoints.down('sm')]: {
             margin: '0 auto 16px auto',
-            height: 'auto',
+            height: 320,
             width: 320
         },
         [theme.breakpoints.up('sm')]: {
             margin: '0 auto',
             height: 'auto',
             width: 400
-        }
+        },
     },
     price: {
         fontSize: 36
     }
-}));
+}))
 
 const returnCodeToBr = (text) => {
     if (text === "") {
@@ -70,10 +70,10 @@ const ProductDetale = () => {
             gender: product.gender,
             images: product.images,
             name: product.name,
-            proce: product.price,
+            price: product.price,
             productId: product.id,
-            quantity:1,
-            seze: selectedSize,
+            quantity: 1,
+            size: selectedSize
         }))
     }, [product]);
 
@@ -82,14 +82,14 @@ const ProductDetale = () => {
             {product && (
                 <div className="p-grid__row">
                     <div className={classes.sliderBox}>
-                        <ImageSwiper images={product.images} />
+                        <ImageSwiper images={product.images}/>
                     </div>
-                    <div className={classes.detale}>
+                    <div className={classes.detail}>
                         <h2 className="u-text__headline">{product.name}</h2>
-                        <p className={classes.price}>{product.price.toLocaleString()}</p>
-                        <div className="module-spacer--small" />
-                            <SizeTable addProduct={addProduct} sizes={product.sizes} />
-                        <div className="module-spacer--small" />
+                        <p className={classes.price}>¥{(product.price).toLocaleString()}</p>
+                        <div className="module-spacer--small"/>
+                        <SizeTable addProduct={addProduct} sizes={product.sizes} />
+                        <div className="module-spacer--small"/>
                         <p>{returnCodeToBr(product.description)}</p>
                     </div>
                 </div>
