@@ -18,8 +18,6 @@ const ProductList = () => {
         dispatch(fetchProducts(gender, category))
     }, [query]);
 
-    console.log(products);
-
     return (
         <section className="c-section-wrapin">
             <div className="p-grid__row">

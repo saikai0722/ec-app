@@ -15,14 +15,15 @@ export const fetchProductsInCartAction = (products) => {
 }
 
 export const SIGN_IN = "SIGN_IN";
-export const signInAction = (useState) => {
+export const signInAction = (userState) => {
     return {
         type: "SIGN_IN",
         payload: {
+            email: userState.email,
             isSignedIn: true,
-            role: useState.role,
-            uid: useState.uid,
-            username: useState.username
+            role: userState.role,
+            uid: userState.uid,
+            username: userState.username
         }
     }
 };
@@ -37,5 +38,13 @@ export const signOutAction = () => {
             uid: "",
             username: ""
         }
+    }
+};
+
+export const UPDATE_USER_STATE = "UPDATE_USER_STATE";
+export const updateUserStateAction = (userState) => {
+    return {
+        type: "UPDATE_USER_STATE",
+        payload: userState
     }
 };
