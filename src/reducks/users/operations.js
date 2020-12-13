@@ -46,8 +46,10 @@ export const listenAuthState = () => {
                             const data = snapshot.data()
 
                             dispatch(signInAction({
+                                customer_id: (data.customer_id) ? data.customer_id : "",
                                 email: data.email,
                                 isSignedIn: true,
+                                payment_method_id: (data.payment_method_id) ? data.payment_method_id : "",
                                 role: data.role,
                                 uid: uid,
                                 username: data.username
@@ -98,8 +100,10 @@ export const signIn = (email, password) => {
                             const data = snapshot.data()
 
                             dispatch(signInAction({
+                                customer_id: (data.customer_id) ? data.customer_id : "",
                                 email: data.email,
                                 isSignedIn: true,
+                                payment_method_id: (data.payment_method_id) ? data.payment_method_id : "",
                                 role: data.role,
                                 uid: uid,
                                 username: data.username
