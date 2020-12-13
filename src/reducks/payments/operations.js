@@ -23,8 +23,38 @@ const createCustomer = async (email, paymentMethodId, uid) => {
     return JSON.parse(customerResponse.body)
 }
 
+export const retrievePaymentMethod = async (paymentMethodId) => {
+    const response = await fetch(BASE_URL + '/v1/paymentMethod', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+            paymentMethodId: paymentMethodId
+        })
+    });
 
-export const registerCard = (stripe, elements) => {
+    const paymentMethodResponse = await response.json()
+    const paymentMethod = JSON.parse(paymentMethodResponse.body)
+    return paymentMethod.card
+}
+
+const updatePaymentMethod = async (customerId, prevPaymentMethodId, nextPaymentMethodId) => {
+    const response = await fetch(BASE_URL + '/v1/updatePaymentMethod', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+            customerId: customerId,
+            prevPaymentMethodId: prevPaymentMethodId,
+            nextPaymentMethodId: nextPaymentMethodId,
+        })
+    })
+
+    const paymentMethodResponse = await response.json()
+    const paymentMethod = JSON.parse(paymentMethodResponse.body)
+    return paymentMethod.card
+}
+
+
+export const registerCard = (stripe, elements, customerId) => {
     return async (dispatch, getState) => {
         const user = getState().users
         const email = user.email
@@ -53,29 +83,50 @@ export const registerCard = (stripe, elements) => {
         }
 
         const paymentMethodId = paymentMethod.id
-        const customerData = await createCustomer(email, paymentMethodId, uid)
-        console.log(customerData);
 
-        if (customerData.id === "") {
-            alert('カード情報の登録に失敗しました。')
-            return;
-        } else {
-            const updateUserState = {
-                customer_id: customerData.id,
-                payment_method_id: paymentMethodId
-            }
+        if (customerId === "") {
 
-            db.collection('users').doc(uid)
-                .update(updateUserState)
-                .then(() => {
-                    dispatch(updateUserStateAction(updateUserState))
-                    alert('お客様情報を登録しました。');
-                    dispatch(push('/user/mypage'))
-                }).catch((error) => {
-                    //Derete stripe customer
+            const customerData = await createCustomer(email, paymentMethodId, uid)
+            console.log(customerData);
+
+            if (customerData.id === "") {
+                alert('カード情報の登録に失敗しました。')
+                return;
+            } else {
+                const updateUserState = {
+                    customer_id: customerData.id,
+                    payment_method_id: paymentMethodId
+                }
+
+                db.collection('users').doc(uid)
+                    .update(updateUserState)
+                    .then(() => {
+                        dispatch(updateUserStateAction(updateUserState))
+                        alert('お客様情報を登録しました。');
+                        dispatch(push('/user/mypage'))
+                    }).catch((error) => {
+                        //Derete stripe customer
+                        alert('カード情報の登録に失敗しました。')
+                        return;
+                    })
+                }
+            } else {
+                const prevPaymentMethodId = getState().users.payment_method_id
+                const updatedPaymentMethod = await updatePaymentMethod(customerId, prevPaymentMethodId, paymentMethodId)
+
+                if (!updatedPaymentMethod) {
                     alert('カード情報の登録に失敗しました。')
-                    return;
-                })
+                } else {
+                    const userState = {
+                        payment_method_id: paymentMethodId
+                    }
+                    db.collection('users').doc(uid).update(userState)
+                    .then(() => {
+                        dispatch(updateUserStateAction(userState))
+                        alert('カード情報を更新しました。')
+                        dispatch(push('/user/mypage'))
+                    })
+                }
+            }
         }
-    };
 }

@@ -32,3 +32,47 @@ exports.stripeCustomer = functions.https.onRequest((req, res) => {
 
     })
 })
+
+exports.retrievePaymentMethod = functions.https.onRequest((req, res) => {
+    const corsHandler = cors({origin: true});
+
+    corsHandler(req, res, () => {
+        if (req.method !== 'POST') {
+            sendResponse(res, 405, {error: "Invalid Request"})
+        }
+
+        return stripe.paymentMethods.retrieve(
+            req.body.paymentMethodId
+        ).then((customer) => {
+            sendResponse(res, 200, customer);
+        }).catch((error) => {
+            console.error(error);
+            sendResponse(res, 500, {error: error})
+        })
+
+    })
+})
+
+exports.updatePaymentMethod = functions.https.onRequest((req, res) => {
+    const corsHandler = cors({origin: true});
+
+    corsHandler(req, res, () => {
+        if (req.method !== 'POST') {
+            sendResponse(res, 405, {error: "Invalid Request"})
+        }
+
+        return stripe.paymentMethods.detach(
+            req.body.prevPaymentMethodId
+        ).then((paymentMethod) => {
+            return stripe.paymentMethods.attach(
+                req.body.nextPaymentMethodId,
+                {customer: req.body.customerId}
+            ).then((nextPaymentMethodId) => {
+                sendResponse(res, 200, nextPaymentMethodId);
+            })
+        }).catch((error) => {
+            sendResponse(res, 500, {error: error})
+        })
+
+    })
+})
